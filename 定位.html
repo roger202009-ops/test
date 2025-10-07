@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>網頁定位範例</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+    <h1>我的地理位置</h1>
+    <p>點擊下面的按鈕，來取得你的位置資訊。</p>
+
+    <button onclick="getLocation()">取得位置</button>
+
+    <p id="result"></p>
+
+    <script>
+        // 定義一個名為 getLocation 的函式
+        function getLocation() {
+            // 檢查瀏覽器是否支援 Geolocation API
+            if (navigator.geolocation) {
+                // 如果支援，就執行 getCurrentPosition 函式
+                navigator.geolocation.getCurrentPosition(showPosition, showError);
+            } else {
+                // 如果不支援，則在 result 元素中顯示訊息
+                document.getElementById("result").innerHTML = "你的瀏覽器不支援地理位置功能。";
+            }
+        }
+
+        // 當成功取得位置時，會呼叫這個函式
+        function showPosition(position) {
+            // 將取得的經度和緯度顯示在 result 元素中
+            document.getElementById("result").innerHTML = 
+            "緯度: " + position.coords.latitude + "<br>" +
+            "經度: " + position.coords.longitude;
+        }
+
+        // 當取得位置失敗時，會呼叫這個函式
+        function showError(error) {
+            var result = document.getElementById("result");
+            switch(error.code) {
+                case error.PERMISSION_DENIED:
+                    result.innerHTML = "使用者拒絕了定位請求。";
+                    break;
+                case error.POSITION_UNAVAILABLE:
+                    result.innerHTML = "位置資訊無法取得。";
+                    break;
+                case error.TIMEOUT:
+                    result.innerHTML = "請求位置資訊超時。";
+                    break;
+                case error.UNKNOWN_ERROR:
+                    result.innerHTML = "發生不明錯誤。";
+                    break;
+            }
+        }
+    </script>
+
+</body>
+</html>
